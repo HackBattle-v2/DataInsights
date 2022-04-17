@@ -1,0 +1,1409 @@
+﻿
+<style>
+    
+    #chartdiv1 {
+        width: 100%;
+        height: 430px;
+        margin-top: 10px;
+        /*margin-left: 130px;
+        margin-bottom: 10px;*/
+        overflow: hidden;
+    }
+
+    #chartdiv {
+        width: 100%;
+        max-width: 100%;
+        height: 488px;
+    }
+</style>
+<title>HackBattle Data Insights v2</title>
+<link rel="icon" type="image/png" href="">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link href="http://cdn.syncfusion.com/ej2/ej2-base/styles/material.css" rel="stylesheet" type="text/css" />
+<link href="http://cdn.syncfusion.com/ej2/ej2-navigations/styles/material.css" rel="stylesheet" type="text/css" />
+<!-- Essential JS 2 Sidebar's global script -->
+<script src="http://cdn.syncfusion.com/ej2/ej2-navigations/dist/global/ej2-navigations.min.js" type="text/javascript"></script>
+<script src="https://ej2.syncfusion.com/javascript/demos/dashboard-layout/default/datasource.js" type="text/javascript"></script>
+<script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js" type="text/javascript"></script>
+<link href="https://cdn.syncfusion.com/ej2/material.css" rel="stylesheet">
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/wc.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" type="text/css" />
+<link rel="stylesheet" href="Content/style.css" type="text/css" />
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<body style="width:100% !important">
+    <style>
+        body {
+            font-size: 14px !important;
+            font-weight: 400 !important;
+            line-height: 1 !important;
+        }
+
+        #navbtn:hover, #navbtn:focus, #navbtn {
+            background-color: #337AB7;
+            border: none;
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #f9fafb !important;
+        }
+
+        .row {
+            width: 100%;
+            --bs-gutter-y: 1rem;
+        }
+
+        .form-group {
+            margin: 10px;
+        }
+    </style>
+    <div id="wrapper" class="control-section">
+        <!--header-section  declaration -->
+        <div>
+            <div id="menuToolbar"></div>
+        </div>
+        <!-- main content declaration -->
+        <div class="main-content" id="maintext">
+            <div class="control-section">
+                <div>
+                    <div style="width:100%;height: 30px">
+                        <span id="ctabheader" style="font-weight:bold"></span>
+                        <button id="togglebtn" style="float:right;width: 75px;display:none" >Edit</button>
+                    </div>
+                </div>
+                <div style="padding:5px;margin-top:5px;text-align: end;">
+                    <div class="add-widget-button e-control e-btn e-lib" id="dialogBtn">
+                        Add New Widget
+                    </div>
+                </div>
+                <div id="DataCoLayout" style="display:none">
+                </div>
+                <div id="DataCoEDA" style="display:none">
+                    <iframe id="datacoframe" src="" width="1150" height="550"></iframe>
+                </div>
+                <div id="TokenLayout" style="display:none">
+                </div>
+                <div id="TokenEDA" style="display:none">
+                    <iframe id="tokenframe" src="" width="1150" height="550"></iframe>
+                </div>
+                <div id="AmazonLayout" style="display:none">
+                </div>
+                <div id="AmazonEDA" style="display:none">
+                    <iframe id="amazonframe" src="" width="1150" height="550"></iframe>
+                </div>
+                <div id="dialogcontent">
+                    <div>
+                        <div id="linetemplate">
+                            <p class="dialog-text">Linechart (1x1) </p>
+                        </div>
+                        <div id="pietemplate">
+                            <p class="dialog-text">Piechart (1x1) </p>
+
+                        </div>
+                        <div id="splinetemplate">
+                            <p class="dialog-text">Splinechart (2x1) </p>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="headerTemplate">
+                    <span id="close" class="e-template-icon e-clear-icon"></span>
+                </div>
+                <div id="content"></div>
+            </div>
+            <div id="modalDialog"></div>
+
+        </div>
+        <!--end of main content declaration -->
+        <!-- sidebar element declaration -->
+        <aside id="menuSidebar" class="sidebar-menu">
+            <!--Menu control declaration-->
+            <div class="main-menu">
+                <div>
+                    <ul id="dockMenu"></ul>
+                </div>
+            </div>
+        </aside>
+        <!-- end of sidebar element -->
+    </div>
+    <button type="button" id="previewclick" data-toggle="modal" style="display:none" data-target="#previewModal"></button>
+    <div class="modal fade" id="previewModal" style="margin-left:-415px !important" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="height:600px;width:995px">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="inchartheader"></h4>
+                </div>
+                <div class="modal-body" id="previewBody" style="overflow-y: scroll;">
+                    <span id="chartNarrative" style=""></span>
+                    <div id="chartBody"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</body>
+<script id="bodycontent" type="template">
+    <div class="panel-content">
+        Content Area
+    </div>
+</script>
+<script id="headercontent" type="template">
+    <div>
+        <div class="header-border"></div>
+        <span id="close" class="e-template-icon e-clear-icon"></span>
+        <!-- <span class="e-template-icon menu default"></span> -->
+    </div>
+</script>
+<script>
+    var finalJSON = [
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "DataCoSupplyChain-Findings",
+            "Title": "H",
+            "Header": "Sales Distribution by City",
+            "Narrative": "Sales Distribution by City",
+            "Explainability": "",
+            "ChartData": "2_DataCoSupplyChain_Analytics/Findings/Exploratory1.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "DataCoSupplyChain-Findings",
+            "Title": "H",
+            "Header": "Sales Distribution by Date",
+            "Narrative": "Sales Distribution by Date",
+            "Explainability": "",
+            "ChartData": "2_DataCoSupplyChain_Analytics/Findings/Exploratory2.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "DataCoSupplyChain-Findings",
+            "Title": "H",
+            "Header": "Products having positive sale ‘trends/forecast’ based on last 30 days sales data",
+            "Narrative": "Regression with stats model – exponential smoothing",
+            "Explainability": "",
+            "ChartData": "2_DataCoSupplyChain_Analytics/Findings/FitbitTheOneWirelessActivity&SleepTrac.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "DataCoSupplyChain-Findings",
+            "Title": "H",
+            "Header": "Products having positive sale ‘trends/forecast’ based on last 30 days sales data",
+            "Narrative": "Regression with stats model – exponential smoothing",
+            "Explainability": "",
+            "ChartData": "2_DataCoSupplyChain_Analytics/Findings/MDGolfPittsburghPenguinsPutter.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "DataCoSupplyChain-Findings",
+            "Title": "H",
+            "Header": "Products having positive sale ‘trends/forecast’ based on last 30 days sales data",
+            "Narrative": "Regression with stats model – exponential smoothing",
+            "Explainability": "",
+            "ChartData": "2_DataCoSupplyChain_Analytics/Findings/MerrellWomen'sGrassbowSportWaterproofHik.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "DataCoSupplyChain-Findings",
+            "Title": "H",
+            "Header": "Products having positive sale ‘trends/forecast’ based on last 30 days sales data",
+            "Narrative": "Regression with stats model – exponential smoothing",
+            "Explainability": "",
+            "ChartData": "2_DataCoSupplyChain_Analytics/Findings/TheNorthFaceWomen'sReconBackpack.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "DataCoSupplyChain-Findings",
+            "Title": "H",
+            "Header": "Products having positive sale ‘trends/forecast’ based on last 30 days sales data",
+            "Narrative": "Regression with stats model – exponential smoothing",
+            "Explainability": "",
+            "ChartData": "2_DataCoSupplyChain_Analytics/Findings/TitleistSmallWheeledTravelCover.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "TokenizedAccessLogs-Findings",
+            "Title": "H",
+            "Header": "Anomaly Detection",
+            "Narrative": "Outlier detection with moving averages",
+            "Explainability": "",
+            "ChartData": "3_TokenizedAccessLogs_Analytics/Findings/Anomaly.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "AmazonFeedback-Findings",
+            "Title": "",
+            "Header": "Top/Bottom 10 products comparing original rating and NLP rated feedback from review",
+            "Narrative": "Leveraged Vader sentiment algorithm",
+            "Explainability": "",
+            "ChartData": "4_AmazonFeedback_Analytics/Findings/bottom10.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "AmazonFeedback-Findings",
+            "Title": "H",
+            "Header": "Reviews Summary",
+            "Narrative": "Positive, negative and neutral reviews",
+            "Explainability": "",
+            "ChartData": "4_AmazonFeedback_Analytics/Findings/ReviewsPie.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "AmazonFeedback-Findings",
+            "Title": "H",
+            "Header": "Top/Bottom 10 products comparing original rating and NLP rated feedback from review",
+            "Narrative": "Leveraged Vader sentiment algorithm",
+            "Explainability": "",
+            "ChartData": "4_AmazonFeedback_Analytics/Findings/top10.png"
+        },
+        {
+            "Type": "Image",
+            "Provider": "Image",
+            "Category": "AmazonFeedback-Findings",
+            "Title": "H",
+            "Header": "Word Clouds of various positive and negative sentiments",
+            "Narrative": "NLTK model library",
+            "Explainability": "",
+            "ChartData": "4_AmazonFeedback_Analytics/Findings/wordcloud.png"
+        }
+    ]
+    var layoutElements = ["DataCoLayout", "TokenLayout", "AmazonLayout", "DataCoEDA", "TokenEDA", "AmazonEDA"];
+    //Toolbar component template element specification
+    var folderEle = '<div class= "e-folder"><div class= "e-folder-name">HackBattle Data Insights v2</div></div>';
+    //Toolbar component initialization
+    var toolbarObj = new ej.navigations.Toolbar({
+        clicked: ToolbarCliked,
+        items: [
+            { prefixIcon: "icon-menu", tooltipText: "Menu" },
+            { template: folderEle }
+        ]
+    });
+    toolbarObj.appendTo("#menuToolbar");
+    var sidebarMenu = new ej.navigations.Sidebar({
+        target: ".main-content",
+        width: "220px",
+        dockSize: "50px",
+        enableDock: true,
+        isOpen: true,
+        type: 'Auto'
+    });
+    sidebarMenu.appendTo('#menuSidebar');
+    // MainMenuItems definition
+    var mainMenuItems = [
+        {
+            text: 'DataCoSupplyChain',
+            iconCss: 'icon-user icon',
+            items: [{ "text": "EDA" }, { "text": "Dashboard" }]
+        },
+        {
+            text: 'TokenizedAccessLogs',
+            iconCss: 'icon-bell-alt icon',
+            items: [{ "text": "EDA" }, { "text": "Dashboard" }]
+        },
+        {
+            text: 'AmazonFeedback',
+            iconCss: 'icon-tag icon',
+            items: [{ "text": "EDA" }, { "text": "Dashboard" }]
+        }
+    ];
+
+    // main-menubar initialization
+    var mainMenuObj = new ej.navigations.Menu({
+        items: mainMenuItems,
+        orientation: 'Vertical',
+        cssClass: 'dock-menu',
+    }, "#dockMenu");
+    function ToolbarCliked(args) {
+        if (args.item.tooltipText == "Menu") {
+            sidebarMenu.toggle();
+        }
+    }
+    var panelData = [];
+    var dashboardObject = null;
+    var toggleBtn = new ej.buttons.Button({
+        cssClass: 'e-outline e-flat e-primary',
+        iconCss: 'edit',
+        isToggle: true
+    });
+    toggleBtn.appendTo('#togglebtn');
+    toggleBtn.element.onclick = function () {
+        debugger
+        if (toggleBtn.element.classList.contains('e-active')) {
+            dashboardObject.allowDragging = true;
+            dashboardObject.allowResizing = true;
+            toggleBtn.content = "SAVE";
+            toggleBtn.iconCss = "save";
+            document.getElementById('dialogBtn').style.display = 'block';
+        } else {
+            dashboardObject.allowResizing = false;
+            dashboardObject.allowDragging = false;
+            toggleBtn.content = "EDIT";
+            toggleBtn.iconCss = "edit";
+            document.getElementById('dialogBtn').style.display = 'none';
+        }
+    };
+
+    function onPanelResize(args) {
+        if (args.element && args.element.querySelector('.e-panel-container .e-panel-content div')) {
+            var chartObj = (args.element.querySelector('.e-panel-container .e-panel-content div')).ej2_instances[0];
+            chartObj.height = '95%';
+            chartObj.width = '100%';
+            chartObj.refresh();
+        }
+    }
+
+    var dialogObj = new ej.popups.Dialog({
+        width: '500px',
+        header: 'Add a widget',
+        showCloseIcon: true,
+        animationSettings: { effect: 'Zoom' },
+        content: document.getElementById('dialogcontent'),
+        target: document.getElementById('target'),
+        isModal: true,
+        height: '260px',
+        visible: false
+    });
+    dialogObj.appendTo('#modalDialog');
+    dialogObj.hide();
+
+    var count = 3;
+    document.getElementById('dialogBtn').onclick = function () {
+
+        dialogObj.show();
+        
+    };
+    var ctab;
+    function lineChartTheme(args) {
+        var chartTheme = location.hash.split('/')[1];
+        chartTheme = chartTheme ? chartTheme : 'Material';
+        args.chart.theme = (chartTheme.charAt(0).toUpperCase() + chartTheme.slice(1)).replace(/-dark/i, 'Dark');
+    }
+    function themeAccumulation(args) {
+        var pieTheme = location.hash.split('/')[1];
+        pieTheme = pieTheme ? pieTheme : 'Material';
+        args.accumulation.theme = (pieTheme.charAt(0).toUpperCase() + pieTheme.slice(1)).replace(/-dark/i, 'Dark');
+    }
+    LoadLayout("TokenEDA");
+    $("#ctabheader").html("TokenizedAccessLogs - EDA");
+    $("#tokenframe").attr("src", "3_TokenizedAccessLogs_Analytics/EDA/EDAOutput.html");
+    $(".e-menu-item").click(function () {
+        panelData = [];
+        ctab = this.innerText;
+        LoadLayout(ctab);        
+    });
+    $(document).on('click', '.e-menu-popup .e-menu-item', function () {
+        debugger
+        var id = this.id;
+        panelData = [];
+        if (id.includes("5")) { ctab = "DataCoLayout"; $("#togglebtn").show(); LoadLayout(ctab, "DataCoSupplyChain-Findings"); $("#ctabheader").html("DataCoSupplyChain - Dashboard");}
+        else if (id.includes("4")) { ctab = "DataCoEDA"; LoadLayout(ctab); $("#ctabheader").html("DataCoSupplyChain - EDA"); $("#datacoframe").attr("src", "2_DataCoSupplyChain_Analytics/EDA/EDAOutput.html");}
+        else if (id.includes("7")) { ctab = "TokenLayout"; $("#togglebtn").show();LoadLayout(ctab, "TokenizedAccessLogs-Findings"); $("#ctabheader").html("TokenizedAccessLogs - Dashboard");}
+        else if (id.includes("6")) { ctab = "TokenEDA"; LoadLayout(ctab); $("#ctabheader").html("TokenizedAccessLogs - EDA"); $("#tokenframe").attr("src", "3_TokenizedAccessLogs_Analytics/EDA/EDAOutput.html");}
+        else if (id.includes("9")) { ctab = "AmazonLayout"; $("#togglebtn").show();LoadLayout(ctab, "AmazonFeedback-Findings"); $("#ctabheader").html("AmazonFeedback - Dashboard");}
+        else if (id.includes("8")) { ctab = "AmazonEDA"; LoadLayout(ctab); $("#ctabheader").html("AmazonFeedback - EDA"); $("#amazonframe").attr("src", "4_AmazonFeedback_Analytics/EDA/edaAmazon.html");}
+        
+    });
+    function LoadLayout(ctab,datafilter) {
+        debugger
+        var rownum = 0;
+        var colnum = 0;
+        $.each(layoutElements, function (i, j) {
+            $('#' + j).hide();
+        });
+        if (ctab.includes("EDA")==false) {
+            $('#'+ctab).html("");
+            
+            $('#' + ctab).show();
+            var data = finalJSON.filter(x => x.Category == datafilter);
+            $.each(data, function (i, j) {
+                if (j.Type == "Column") {
+                    panelData.push({
+                        'sizeX': 2, 'sizeY': 1, 'row': rownum, 'col': colnum,
+                        header: '<div>' + j.Header + '</div>', content: '<div class="chartbox" id="' + j.Category + i + '" style="height:100%; width:100%"></div>'
+                    });
+                    rownum = rownum + 1;
+                    colnum = 0;
+
+                }
+                else if (j.Type == "ForcedGraph") {
+                    panelData.push({
+                        'sizeX': 2, 'sizeY': 2, 'row': rownum, 'col': colnum,
+                        header: '<div>' + j.Header + '</div>', content: '<div id="' + j.Category + i + '" style="height:100%; width:100%"></div>'
+                    });
+                    rownum = rownum + 2;
+                    colnum = 0;
+
+                }
+                else {
+                    panelData.push({
+                        'sizeX': 1, 'sizeY': 1, 'row': rownum, 'col': colnum,
+                        header: '<div>' + j.Header + '</div>', content: '<div class="chartbox" id="' + j.Category + i + '" style="height:100%; width:100%"></div>'
+                    });
+                    if (colnum == 1) rownum = rownum + 1;
+                    if (colnum == 1) colnum = 0;
+                    else colnum = 1;
+
+                }
+            });
+            debugger
+            var dashboard = new ej.layouts.DashboardLayout({
+                cellSpacing: [10, 10],
+                cellAspectRatio: 200 / 85,
+                columns: 2,
+                allowDragging: false,
+                allowResizing: false,
+                resizeStop: onPanelResize,
+                panels: panelData
+            });
+            dashboard.appendTo('#' + ctab);
+            dashboardObject = document.getElementById(ctab).ej2_instances[0];
+            $.each(data, function (k, v) {
+                var chartId = v.Category + k;
+                if (v.Type == "Column" && v.Provider == "AmCharts") { renderColumnChart(chartId, v.ChartData); }
+                else if (v.Type == "SimplePie" && v.Provider == "AmCharts") { renderSimplePieChart(chartId, v.ChartData); }
+                else if (v.Type == "DonutPie" && v.Provider == "AmCharts") { renderDonutPieChart(chartId, v.ChartData); }
+                else if (v.Type == "Line" && v.Provider == "AmCharts") { renderLineChart(chartId, v.ChartData); }
+                else if (v.Type == "DraggableBar" && v.Provider == "AmCharts") { renderBarChart(chartId, v.ChartData); }
+                else if (v.Type == "WordCloud" && v.Provider == "AmCharts") { renderWordCloud(chartId, v.ChartData); }
+                else if (v.Type == "Anomaly" && v.Provider == "AmCharts") { renderAnomalyChart(chartId, v.ChartData); }
+                else if (v.Type == "Image") { renderImageChart(chartId, v.ChartData); }
+                else if (v.Type == "ForcedGraph" && v.Provider == "AmCharts") { renderForcedGraphChart(chartId, v.ChartData); }
+                else if (v.Type == "Gauge" && v.Provider == "GoogleCharts") { renderGChartGauge(chartId, v.ChartData); }
+                else if (v.Type == "Line" && v.Provider == "GoogleCharts") { renderGChartLine(chartId, v.ChartData); }
+                else if (v.Type == "Bar" && v.Provider == "GoogleCharts") { renderGChartBar(chartId, v.ChartData); }
+                else if (v.Type == "Pie" && v.Provider == "GoogleCharts") { renderGChartPie(chartId, v.ChartData); }
+                else if (v.Type == "Area" && v.Provider == "GoogleCharts") { renderGChartArea(chartId, v.ChartData); }
+            });
+        }
+        $('#' + ctab).show();
+        
+    }
+    //var tab4 = finalJSON.filter(x => x.Category == "Text");
+    $(document).on('click', '.chartbox', function () {
+        debugger
+        var inchartHtml = `<div id="innerChart" style="width:100%;height:450px;" >
+                    </div>`;
+        $("#chartBody").html("");
+        $("#chartBody").append(inchartHtml);
+        var reqElement = this.id;
+        var ctabjson = finalJSON.filter(x => x.Category == reqElement.split("Findings")[0]+"Findings");
+        var reqJSON;
+        reqJSON = ctabjson[parseInt(reqElement.split("Findings")[1])];
+        $("#inchartheader").html(reqJSON.Header);
+        $("#chartNarrative").html(reqJSON.Narrative);
+        if (reqJSON.Type == "Column" && reqJSON.Provider == "AmCharts") { renderColumnChart("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "SimplePie" && reqJSON.Provider == "AmCharts") { renderSimplePieChart("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "DonutPie" && reqJSON.Provider == "AmCharts") { renderDonutPieChart("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "Line" && reqJSON.Provider == "AmCharts") { renderLineChart("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "DraggableBar" && reqJSON.Provider == "AmCharts") { renderBarChart("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "WordCloud" && reqJSON.Provider == "AmCharts") { renderWordCloud("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "Anomaly" && reqJSON.Provider == "AmCharts") { renderAnomalyChart("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "Image") { renderImageChart("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "ForcedGraph" && reqJSON.Provider == "AmCharts") { renderForcedGraphChart("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "Gauge" && reqJSON.Provider == "GoogleCharts") { renderGChartGauge("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "Line" && reqJSON.Provider == "GoogleCharts") { renderGChartLine("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "Bar" && reqJSON.Provider == "GoogleCharts") { renderGChartBar("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "Pie" && reqJSON.Provider == "GoogleCharts") { renderGChartPie("innerChart", reqJSON.ChartData); }
+        else if (reqJSON.Type == "Area" && reqJSON.Provider == "GoogleCharts") { renderGChartArea("innerChart", reqJSON.ChartData); }
+        $("#previewclick").click();
+    });
+
+    function renderColumnChart(element, chartdata) {
+        am5.ready(function () {
+
+            // Create root element
+
+            var root1 = am5.Root.new(element);
+
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root1.setThemes([
+                am5themes_Animated.new(root1)
+            ]);
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/
+            var chart = root1.container.children.push(am5xy.XYChart.new(root1, {
+                panX: true,
+                panY: true,
+                wheelX: "panX",
+                wheelY: "zoomX"
+            }));
+
+            // Add cursor
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+            var cursor = chart.set("cursor", am5xy.XYCursor.new(root1, {}));
+            cursor.lineY.set("visible", false);
+
+
+            // Create axes
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+            var xRenderer = am5xy.AxisRendererX.new(root1, { minGridDistance: 30 });
+            //xRenderer.labels.template.setAll({
+            //    rotation: -90,
+            //    centerY: am5.p50,
+            //    centerX: am5.p100,
+            //    paddingRight: 15
+            //});
+
+            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root1, {
+                maxDeviation: 0.3,
+                categoryField: "column",
+                renderer: xRenderer,
+                tooltip: am5.Tooltip.new(root1, {})
+            }));
+            xRenderer.grid.template.set("visible", false);
+
+            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root1, {
+                maxDeviation: 0.3,
+                renderer: am5xy.AxisRendererY.new(root1, {})
+            }));
+
+
+            // Create series
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+            var series = chart.series.push(am5xy.ColumnSeries.new(root1, {
+                name: "Series 1",
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueYField: "value",
+                sequencedInterpolation: true,
+                categoryXField: "column",
+                tooltip: am5.Tooltip.new(root1, {
+                    labelText: "{valueY}"
+                })
+            }));
+
+            series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5 });
+            series.columns.template.adapters.add("fill", (fill, target) => {
+                return chart.get("colors").getIndex(series.columns.indexOf(target));
+            });
+
+            series.columns.template.adapters.add("stroke", (stroke, target) => {
+                return chart.get("colors").getIndex(series.columns.indexOf(target));
+            });
+
+
+            // Set data
+            var data = chartdata;
+            xAxis.data.setAll(data);
+            series.data.setAll(data);
+
+
+            // Make stuff animate on load
+            // https://www.amcharts.com/docs/v5/concepts/animations/
+            series.appear(1000);
+            chart.appear(1000, 100);
+
+        });
+    }
+    function renderSimplePieChart(element, chartdata) {
+        am5.ready(function () {
+
+            var root2 = am5.Root.new(element);
+
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root2.setThemes([
+                am5themes_Animated.new(root2)
+            ]);
+
+
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+            var chart = root2.container.children.push(am5percent.PieChart.new(root2, {
+                layout: root2.verticalLayout
+            }));
+
+
+            // Create series
+            // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
+            var series = chart.series.push(am5percent.PieSeries.new(root2, {
+                valueField: "value",
+                categoryField: "column"
+            }));
+
+
+            // Set data
+            // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
+            series.data.setAll(chartdata);
+
+
+            // Play initial series animation
+            // https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
+            series.appear(1000, 100);
+
+        });
+    }
+    function renderDonutPieChart(element, chartdata) {
+        am5.ready(function () {
+
+            var root3 = am5.Root.new(element);
+
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root3.setThemes([
+                am5themes_Animated.new(root3)
+            ]);
+
+
+
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/
+            var chart = root3.container.children.push(am5percent.PieChart.new(root3, {
+                layout: root3.verticalLayout,
+                innerRadius: am5.percent(50),
+                //width:am5.percent(80)
+            }));
+
+
+            // Create series
+            // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Series
+            var series = chart.series.push(am5percent.PieSeries.new(root3, {
+                valueField: "value",
+                categoryField: "column",
+                alignLabels: false
+            }));
+
+            //series.labels.template.setAll({
+            //    textType: "circular",
+            //    centerX: 0,
+            //    centerY: 0
+            //});
+            series.labels.template.set("forceHidden", true);
+            series.ticks.template.set("visible", false);
+            series.slices.template.set("tooltipText", "{category}: [bold]{valuePercentTotal.formatNumber('0.00')}%[/] ({value})");
+            //series.labels.template.set("text", "{column}: [bold]{valuePercentTotal.formatNumber('0.00')}%[/] ({value})");
+
+            // Set data
+            // https://www.amcharts.com/docs/v5/charts/percent-charts/pie-chart/#Setting_data
+            series.data.setAll(chartdata);
+
+
+            //Create legend
+            //https://www.amcharts.com/docs/v5/charts/percent-charts/legend-percent-series/
+            var legend = chart.children.push(am5.Legend.new(root3, {
+                centerX: am5.percent(50),
+                x: am5.percent(50),
+                marginTop: 15,
+                marginBottom: 15,
+            }));
+
+            legend.data.setAll(series.dataItems);
+
+
+            // Play initial series animation
+            // https://www.amcharts.com/docs/v5/concepts/animations/#Animation_of_series
+            series.appear(1000, 100);
+
+        });
+    }
+    function renderLineChart(element, chartdata) {
+        var chartdata3 = [];
+        am5.ready(function () {
+            // Create root4 element
+
+            var root4 = am5.Root.new(element);
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root4.setThemes([
+                am5themes_Animated.new(root4)
+            ]);
+
+            var colorSet = am5.ColorSet.new(root4, {});
+            $.each(chartdata, function (k, v) {
+                chartdata3.push({
+                    "column": v.column, "value": parseFloat(v.value), "bulletSettings": {
+                        "fill": colorSet.getIndex(0)
+                    }
+                })
+            });
+
+
+
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/
+            var chart = root4.container.children.push(am5xy.XYChart.new(root4, {
+                panX: true,
+                panY: true,
+                wheelX: "panX",
+                wheelY: "zoomX",
+                layout: root4.verticalLayout
+            }));
+
+            // Add cursor
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+            var cursor = chart.set("cursor", am5xy.XYCursor.new(root4, {
+                behavior: "none"
+            }));
+            cursor.lineY.set("visible", false);
+
+
+
+            // The data
+            var data = chartdata3;
+
+            // Create axes
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+            var xRenderer = am5xy.AxisRendererX.new(root4, {});
+            xRenderer.grid.template.set("location", 0.5);
+            xRenderer.labels.template.setAll({
+                location: 0.5,
+                multiLocation: 0.5
+            });
+
+            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root4, {
+                categoryField: "column",
+                renderer: xRenderer,
+                tooltip: am5.Tooltip.new(root4, {})
+            }));
+
+            xAxis.data.setAll(data);
+
+            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root4, {
+                maxPrecision: 0,
+                renderer: am5xy.AxisRendererY.new(root4, {})
+            }));
+
+            var series = chart.series.push(am5xy.LineSeries.new(root4, {
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueYField: "value",
+                categoryXField: "column",
+                tooltip: am5.Tooltip.new(root4, {
+                    labelText: "{valueY}",
+                    dy: -5
+                })
+            }));
+
+            series.strokes.template.setAll({
+                templateField: "strokeSettings",
+                strokeWidth: 2
+            });
+
+            series.fills.template.setAll({
+                visible: true,
+                fillOpacity: 0.5,
+                templateField: "fillSettings"
+            });
+
+
+            series.bullets.push(function () {
+                return am5.Bullet.new(root4, {
+                    sprite: am5.Circle.new(root4, {
+                        templateField: "bulletSettings",
+                        radius: 5
+                    })
+                });
+            });
+
+            series.data.setAll(data);
+            series.appear(1000);
+
+            // Add scrollbar
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
+            chart.set("scrollbarX", am5.Scrollbar.new(root4, {
+                orientation: "horizontal",
+                marginBottom: 20
+            }));
+
+            // Make stuff animate on load
+            // https://www.amcharts.com/docs/v5/concepts/animations/
+            chart.appear(1000, 100);
+
+        });
+    }
+    function renderBarChart(element, chartdata) {
+        am5.ready(function () {
+            // Create root5 element
+            var root5 = am5.Root.new(element);
+
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root5.setThemes([am5themes_Animated.new(root5)]);
+
+
+
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/
+            var chart = root5.container.children.push(
+                am5xy.XYChart.new(root5, {
+                    panX: false,
+                    panY: false,
+                    wheelX: "none",
+                    wheelY: "none"
+                })
+            );
+
+
+            // Create axes
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+            var yRenderer = am5xy.AxisRendererY.new(root5, { minGridDistance: 30 });
+
+            var yAxis = chart.yAxes.push(
+                am5xy.CategoryAxis.new(root5, {
+                    maxDeviation: 0,
+                    categoryField: "column",
+                    renderer: yRenderer
+                })
+            );
+
+            var xAxis = chart.xAxes.push(
+                am5xy.ValueAxis.new(root5, {
+                    maxDeviation: 0,
+                    min: 0,
+                    renderer: am5xy.AxisRendererX.new(root5, {})
+                })
+            );
+
+
+            // Create series
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+            var series = chart.series.push(
+                am5xy.ColumnSeries.new(root5, {
+                    name: "Series 1",
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                    valueXField: "value",
+                    sequencedInterpolation: true,
+                    categoryYField: "column"
+                })
+            );
+
+            var columnTemplate = series.columns.template;
+
+            columnTemplate.setAll({
+                draggable: true,
+                cursorOverStyle: "pointer",
+                tooltipText: "{value}",
+                cornerRadiusBR: 10,
+                cornerRadiusTR: 10
+            });
+            columnTemplate.adapters.add("fill", (fill, target) => {
+                return chart.get("colors").getIndex(series.columns.indexOf(target));
+            });
+
+            columnTemplate.adapters.add("stroke", (stroke, target) => {
+                return chart.get("colors").getIndex(series.columns.indexOf(target));
+            });
+
+            columnTemplate.events.on("dragstop", () => {
+                sortCategoryAxis();
+            });
+
+            // Get series item by category
+            function getSeriesItem(category) {
+                for (var i = 0; i < series.dataItems.length; i++) {
+                    var dataItem = series.dataItems[i];
+                    if (dataItem.get("categoryY") == category) {
+                        return dataItem;
+                    }
+                }
+            }
+
+
+            // Axis sorting
+            function sortCategoryAxis() {
+                // Sort by value
+                series.dataItems.sort(function (x, y) {
+                    return y.get("graphics").y() - x.get("graphics").y();
+                });
+
+                var easing = am5.ease.out(am5.ease.cubic);
+
+                // Go through each axis item
+                am5.array.each(yAxis.dataItems, function (dataItem) {
+                    // get corresponding series item
+                    var seriesDataItem = getSeriesItem(dataItem.get("category"));
+
+                    if (seriesDataItem) {
+                        // get index of series data item
+                        var index = series.dataItems.indexOf(seriesDataItem);
+
+                        var column = seriesDataItem.get("graphics");
+
+                        // position after sorting
+                        var fy =
+                            yRenderer.positionToCoordinate(yAxis.indexToPosition(index)) -
+                            column.height() / 2;
+
+                        // set index to be the same as series data item index
+                        if (index != dataItem.get("index")) {
+                            dataItem.set("index", index);
+
+                            // current position
+                            var x = column.x();
+                            var y = column.y();
+
+                            column.set("dy", -(fy - y));
+                            column.set("dx", x);
+
+                            column.animate({ key: "dy", to: 0, duration: 600, easing: easing });
+                            column.animate({ key: "dx", to: 0, duration: 600, easing: easing });
+                        } else {
+                            column.animate({ key: "y", to: fy, duration: 600, easing: easing });
+                            column.animate({ key: "x", to: 0, duration: 600, easing: easing });
+                        }
+                    }
+                });
+
+                // Sort axis items by index.
+                // This changes the order instantly, but as dx and dy is set and animated,
+                // they keep in the same places and then animate to true positions.
+                yAxis.dataItems.sort(function (x, y) {
+                    return x.get("index") - y.get("index");
+                });
+            }
+
+
+            yAxis.data.setAll(chartdata);
+            series.data.setAll(chartdata);
+
+
+            // Make stuff animate on load
+            // https://www.amcharts.com/docs/v5/concepts/animations/
+            series.appear(1000);
+            chart.appear(1000, 100);
+
+        }); // end am5.ready()
+
+    }
+    function renderWordCloud(element, chartdata) {
+        am5.ready(function () {
+
+            // Create root element
+            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new(element);
+
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+
+            // Add series
+            // https://www.amcharts.com/docs/v5/charts/word-cloud/
+            var series = root.container.children.push(am5wc.WordCloud.new(root, {
+                categoryField: "tag",
+                valueField: "weight",
+                maxFontSize: am5.percent(15)
+            }));
+
+            // Configure labels
+            series.labels.template.setAll({
+                fontFamily: "Courier New"
+            });
+
+
+            setInterval(function () {
+                am5.array.each(series.dataItems, function (dataItem) {
+                    var value = Math.random() * 65;
+                    value = value - Math.random() * value;
+                    dataItem.set("value", value);
+                    dataItem.set("valueWorking", value);
+                })
+            }, 5000)
+
+
+            // Data from:
+            // https://insights.stackoverflow.com/survey/2021#section-most-popular-technologies-programming-scripting-and-markup-languages
+            series.data.setAll(chartdata);
+
+        });
+    }
+    function renderAnomalyChart(element, chartdata) {
+        am5.ready(function () {
+
+            var data = chartdata;
+
+            // Create root element
+            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new(element);
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+
+            // Create chart
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/
+            var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                panX: false,
+                panY: false,
+                wheelY: "none"
+            }));
+
+            chart.zoomOutButton.set("forceHidden", true);
+
+            chart.get("colors").set("step", 2);
+
+            // Create axes
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+            var xAxis = chart.xAxes.push(am5xy.DateAxis.new(root, {
+                baseInterval: { timeUnit: "day", count: 1 },
+                renderer: am5xy.AxisRendererX.new(root, { minGridDistance: 50 }),
+                tooltip: am5.Tooltip.new(root, {})
+            }));
+
+
+            var distanceAxisRenderer = am5xy.AxisRendererY.new(root, {});
+            distanceAxisRenderer.grid.template.set("forceHidden", true);
+            var distanceAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                renderer: distanceAxisRenderer,
+                tooltip: am5.Tooltip.new(root, {})
+            }));
+
+            var latitudeAxisRenderer = am5xy.AxisRendererY.new(root, {});
+            latitudeAxisRenderer.grid.template.set("forceHidden", true);
+            var latitudeAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                renderer: latitudeAxisRenderer,
+                forceHidden: true
+            }));
+
+            var durationAxisRenderer = am5xy.AxisRendererY.new(root, {
+                opposite: true
+            });
+            durationAxisRenderer.grid.template.set("forceHidden", true);
+            var durationAxis = chart.yAxes.push(am5xy.DurationAxis.new(root, {
+                baseUnit: "minute",
+                renderer: durationAxisRenderer,
+                extraMax: 0.3
+            }));
+
+            // Create series
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+            var distanceSeries = chart.series.push(am5xy.ColumnSeries.new(root, {
+                xAxis: xAxis,
+                yAxis: distanceAxis,
+                valueYField: "distance",
+                valueXField: "date",
+                tooltip: am5.Tooltip.new(root, {
+                    labelText: "{valueY} miles"
+                })
+            }));
+
+            distanceSeries.data.processor = am5.DataProcessor.new(root, {
+                dateFields: ["date"],
+                dateFormat: "yyyy-MM-dd"
+            });
+
+            var latitudeSeries = chart.series.push(am5xy.LineSeries.new(root, {
+                xAxis: xAxis,
+                yAxis: latitudeAxis,
+                valueYField: "latitude",
+                valueXField: "date",
+                tooltip: am5.Tooltip.new(root, {
+                    labelText: "latitude: {valueY} ({townName})"
+                })
+            }));
+
+            latitudeSeries.strokes.template.setAll({ strokeWidth: 2 });
+
+            // Add circle bullet
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/#Bullets
+            latitudeSeries.bullets.push(function () {
+                var graphics = am5.Circle.new(root, {
+                    strokeWidth: 2,
+                    radius: 5,
+                    stroke: latitudeSeries.get("stroke"),
+                    fill: root.interfaceColors.get("background"),
+                });
+
+                graphics.adapters.add("radius", function (radius, target) {
+                    return target.dataItem.dataContext.townSize;
+                })
+
+                return am5.Bullet.new(root, {
+                    sprite: graphics
+                });
+            });
+
+            var durationSeries = chart.series.push(am5xy.LineSeries.new(root, {
+                xAxis: xAxis,
+                yAxis: durationAxis,
+                valueYField: "duration",
+                valueXField: "date",
+                tooltip: am5.Tooltip.new(root, {
+                    labelText: "duration: {valueY.formatDuration()}"
+                })
+            }));
+
+            durationSeries.strokes.template.setAll({ strokeWidth: 2 });
+
+            // Add circle bullet
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/#Bullets
+            durationSeries.bullets.push(function () {
+                var graphics = am5.Rectangle.new(root, {
+                    width: 10,
+                    height: 10,
+                    centerX: am5.p50,
+                    centerY: am5.p50,
+                    fill: durationSeries.get("stroke")
+                });
+
+                return am5.Bullet.new(root, {
+                    sprite: graphics
+                });
+            });
+
+            // Add cursor
+            // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+            chart.set("cursor", am5xy.XYCursor.new(root, {
+                xAxis: xAxis,
+                yAxis: distanceAxis
+            }));
+
+
+            distanceSeries.data.setAll(data);
+            latitudeSeries.data.setAll(data);
+            durationSeries.data.setAll(data);
+            xAxis.data.setAll(data);
+
+            // Make stuff animate on load
+            // https://www.amcharts.com/docs/v5/concepts/animations/
+            distanceSeries.appear(1000);
+            chart.appear(1000, 100);
+
+        });
+    }
+    function renderImageChart(element, chartdata) {
+        var imgHtml = '<img style="max-width: 100%;max-height: 100 %;" src="' + chartdata + '" />';
+        $("#" + element).html(imgHtml);
+    }
+    function renderForcedGraphChart(element, chartdata) {
+        am5.ready(function () {
+            function normalize(value, arr) {
+                var start = 1
+                var end = 14
+                var width = end - start
+                var max = Math.max.apply(Math, arr.map(function (o) { return o.numrows; }))
+                var min = Math.min.apply(Math, arr.map(function (o) { return o.numrows; }))
+                var res = (value - min) / (max - min) * width + start
+                return Math.round(res);
+            }
+            debugger
+            var tblcount = 0;
+            var fndata = chartdata
+            var chartdataf = [];
+            var relations = 0;
+            $.each(fndata, function (k, v) {
+               // if (v.foreign_keys.length > 0) {
+                    tblcount = tblcount + 1;
+                    var tbl = {}
+                    tbl.name = v.tbl_name;
+                    tbl.value = normalize(v.numrows, fndata);
+                    if (tbl.value == 1) tbl.slicedName = v.tbl_name.slice(0, 8);
+                    else if (tbl.value < 5) tbl.slicedName = v.tbl_name.slice(0, 10);
+                    else if (tbl.value >= 5 && tbl.value <= 8) tbl.slicedName = v.tbl_name.slice(0, 16);
+                    else if (tbl.value > 8 && tbl.value <= 12) tbl.slicedName = v.tbl_name.slice(0, 22);
+                    else tbl.slicedName = v.tbl_name; tbl.rowcount = v.numrows;
+                    //relations = relations + v.foreign_keys.length;
+                    var cols = [];
+                    var links = [];
+                    var linknames = [];
+                    $.each(v.columns, function (i, j) {
+                        cols.push({ "name": j });
+                    });
+                    $.each(v.foreign_keys, function (i, j) {
+                        if (excludeTables.includes(j.to_table.replace("_temp", "")))
+                            links.push(j.to_table.replace("_temp", ""));
+                        else links.push(j.to_table);
+                        var linkObj = j;
+                        linkObj.from_table = v.tbl_name;
+                        linknames.push(linkObj);
+                        relations = relations + 1;
+                    });
+                    tbl.children = cols;
+                    tbl.linkWith = links;
+                    tbl.links = linknames;
+                    chartdataf.push(tbl);
+               // }
+            });
+            // Create root element
+            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new(element);
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+            var data = {
+                value: 0,
+                children: chartdataf
+            };
+
+            // Create wrapper container
+            var container = root.container.children.push(am5.Container.new(root, {
+                width: am5.percent(100),
+                height: am5.percent(100),
+                layout: root.verticalLayout
+            }));
+
+            // Create series
+            // https://www.amcharts.com/docs/v5/charts/hierarchy/#Adding
+            var series = container.children.push(am5hierarchy.ForceDirected.new(root, {
+                singleBranchOnly: false,
+                downDepth: 2,
+                topDepth: 1,
+                initialDepth: 1,
+                valueField: "value",
+                categoryField: "name",
+                childDataField: "children",
+                idField: "name",
+                linkWithField: "linkWith",
+                manyBodyStrength: -10,
+                centerStrength: 0.8
+            }));
+
+            series.get("colors").setAll({
+                step: 2
+            });
+
+            series.links.template.set("strength", 0.5);
+
+            series.data.setAll([data]);
+
+            series.set("selectedDataItem", series.dataItems[0]);
+            series.nodes.template.set("tooltipText", "{name}: [bold]{rowcount}[/]");
+
+            // Make stuff animate on load
+            series.appear(1000, 100);
+
+        });
+    }
+    function renderGChartGauge(element, chartdata) {
+        google.charts.load('current', { 'packages': ['gauge'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable(chartdata);
+
+            var options = {
+                width: 400, height: 120,
+                redFrom: 90, redTo: 100,
+                yellowFrom: 75, yellowTo: 90,
+                minorTicks: 5
+            };
+
+            var chart = new google.visualization.Gauge(document.getElementById(element));
+
+            chart.draw(data, options);
+        }
+    }
+    function renderGChartLine(element, chartdata) {
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable(chartdata);
+
+            var options = {
+                title: 'Company Performance',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById(element));
+
+            chart.draw(data, options);
+        }
+
+    }
+    function renderGChartBar(element, chartdata) {
+        google.charts.load('current', { packages: ['corechart', 'bar'] });
+        google.charts.setOnLoadCallback(drawBasic);
+
+        function drawBasic() {
+
+            var data = google.visualization.arrayToDataTable(chartdata);
+
+            var options = {
+                chartArea: { width: '50%' },
+                hAxis: {
+                    title: 'Total Population',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'City'
+                }
+            };
+
+            var chart = new google.visualization.BarChart(document.getElementById(element));
+
+            chart.draw(data, options);
+        }
+    }
+    function renderGChartPie(element, chartdata) {
+        google.charts.load("current", { packages: ["corechart"] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable(chartdata);
+
+            var options = {
+                is3D: true
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById(element));
+            chart.draw(data, options);
+        }
+    }
+    function renderGChartArea(element, chartdata) {
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable(chartdata);
+
+            var options = {
+                
+                vAxis: { minValue: 0 }
+            };
+
+            var chart = new google.visualization.AreaChart(document.getElementById(element));
+            chart.draw(data, options);
+        }
+    }
+    
+</script>
